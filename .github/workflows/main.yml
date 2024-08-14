@@ -1,4 +1,3 @@
-# .github/workflows/node-app.yml
 name: Node.js CI
 
 on:
@@ -28,3 +27,22 @@ jobs:
 
       - name: Build
         run: npm run build
+
+  check-changes:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Get Changed Files
+        id: changedFiles
+        uses: jitterbit/get-changed-files@v1
+        with:
+          format: "json"
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Debug Output
+        run: |
+          echo "Added/Modified Files: ${{ steps.changedFiles.outputs.added_modified }}"
+          echo "Renamed Files: ${{ steps.changedFiles.outputs.renamed }}"
