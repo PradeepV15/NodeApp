@@ -42,7 +42,12 @@ jobs:
           format: "json"
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Debug Output
+      - name: Check if change.txt is modified
         run: |
-          echo "Added/Modified Files: ${{ steps.changedFiles.outputs.added_modified }}"
-          echo "Renamed Files: ${{ steps.changedFiles.outputs.renamed }}"
+          echo "Checking if change.txt was modified..."
+          if echo "${{ steps.changedFiles.outputs.added_modified }}" | grep -q 'change.txt'; then
+            echo "change.txt was modified."
+          else
+            echo "change.txt was not modified. Failing the build."
+            exit 1
+          fi
