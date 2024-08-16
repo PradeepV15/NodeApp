@@ -37,17 +37,12 @@ jobs:
               const renamedFilesArray = JSON.parse(RENAMED_FILES); 
               const filesArray = [...addedModifiedFilesArray, ...renamedFilesArray];
 
-              // if(!filesArray.find(file => file.match(/^change.txt/))){
-              //     throw new Error('changelog file has not been updated');
-              // }
-
-             //  console.log(${{steps.changedFiles.outputs.modified}}.includes('change.txt'));
-             addedModifiedFilesArray.forEach(file => {console.log(file.match(/change\.md$/));});
-              //if(${{steps.changedFiles.outputs.modified}}.find(file => file.match(/^app.test.js/))){
-              //  console.log('changelog file has not been updated');
-              //}
-
-              //console.log(addedModifiedFilesArray);
+               if(!filesArray.find(file => file.match(/change.md$/))){
+                   throw new Error('changelog file has not been updated');
+               }
+               else{
+                  core.setOutput('changelog-updated', 'true');
+                  }
               
             } catch (err) {
               core.setFailed(err.message);
